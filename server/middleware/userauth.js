@@ -1,43 +1,44 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
+import userModel from "../models/usermodels.js";
 
 const userAuth = async (req, res, next) => {
-    try {
-        // Extract token from cookies
-        const { token } = req.cookies;
+  try {
+    // 🔍 Get token from cookies
+    const token = req.cookies?.token;
 
-        if (!token) {
-            return res.status(401).json({
-                success: false,
-                message: 'Not Authorized. Please log in again.',
-            });
-        }
-
-        try {
-            // Verify the token
-            const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET);
-
-            if (tokenDecoded?.id) {
-                req.body.userId = tokenDecoded.id; // Set user ID in request body
-                next(); // Proceed to the next middleware
-            } else {
-                return res.status(401).json({
-                    success: false,
-                    message: 'Not Authorized. Please log in again.',
-                });
-            }
-        } catch (error) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid or expired token. Please log in again.',
-            });
-        }
-    } catch (error) {
-        // Handle unexpected errors
-        return res.status(500).json({
-            success: false,
-            message: 'An error occurred during authentication.',
-        });
+    // ❌ No token
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized, token missing"
+      });
     }
+
+    // ✅ Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // 🔍 Get user from DB
+    const user = await userModel.findById(decoded.id).select("-password");
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    // ✅ Attach user to request
+    req.user = user;
+    next();
+
+  } catch (error) {
+    console.error("Auth middleware error:", error.message);
+
+    return res.status(401).json({
+      success: false,
+      message: "Not authorized, invalid token"
+    });
+  }
 };
 
 export default userAuth;
