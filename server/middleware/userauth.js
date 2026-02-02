@@ -3,10 +3,8 @@ import userModel from "../models/usermodels.js";
 
 const userAuth = async (req, res, next) => {
   try {
-    // 🔍 Get token from cookies
     const token = req.cookies?.token;
 
-    // ❌ No token
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -14,11 +12,11 @@ const userAuth = async (req, res, next) => {
       });
     }
 
-    // ✅ Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // 🔍 Get user from DB
-    const user = await userModel.findById(decoded.id).select("-password");
+    const user = await userModel
+      .findById(decoded.id)
+      .select("-password");
 
     if (!user) {
       return res.status(401).json({
@@ -27,13 +25,10 @@ const userAuth = async (req, res, next) => {
       });
     }
 
-    // ✅ Attach user to request
-    req.user = user;
+    req.user = user; // 🔥 attach user
     next();
 
   } catch (error) {
-    console.error("Auth middleware error:", error.message);
-
     return res.status(401).json({
       success: false,
       message: "Not authorized, invalid token"
