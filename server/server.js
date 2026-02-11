@@ -7,6 +7,7 @@ import authRoutes from "./routes/authroutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
+app.set('trust proxy', 1); // 🔥 Trust Vercel proxy
 
 // DB
 connectDB();
