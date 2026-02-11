@@ -1,7 +1,11 @@
 node_modules
+<<<<<<< HEAD
 .codegpt
 .env
 dist
 build
 .DS_Store
 *.log
+=======
+.codegpt
+>>>>>>> a6d14df3f23c6338c28cfb445bdd5a96c4e8cea5
