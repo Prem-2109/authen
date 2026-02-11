@@ -12,22 +12,31 @@ app.set('trust proxy', 1); // 🔥 Trust Vercel proxy
 // DB
 connectDB();
 
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'https://authenclient.vercel.app'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 // Body & cookies
 app.use(express.json());
 app.use(cookieParser());
 
-// 🔥 CORS (Vercel + Cookies SAFE)
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "https://authenclient.vercel.app"],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-  })
-);
-
 // 🔥 Preflight fix
-app.options("*", cors());
+app.options('*', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || 'https://authenclient.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.status(200).end();
+});
 
 // Routes
 app.get("/", (req, res) => res.send("API Working"));
