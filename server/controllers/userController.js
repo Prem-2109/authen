@@ -1,22 +1,20 @@
-import userModel from "../models/usermodels.js";
-
 export const getUserData = async (req, res) => {
-    try {
-        const { userId } = req.body;
-        const user = await userModel.findById(userId);
+  try {
+    const user = req.user; // ✅ from middleware
 
-        if (!user) {
-            return res.json({ success: false, message: 'User not Found' });
-        }
+    res.json({
+      success: true,
+      userData: {
+        name: user.name,
+        email: user.email,
+        isAccountVerified: user.isAccountVerified
+      }
+    });
 
-        res.json({
-            success: true,
-            userData: { // Corrected from userDate to userData
-                name: user.name,
-                isAccountVerified: user.isAccountVerified
-            }
-        });
-    } catch (error) {
-        res.json({ success: false, message: error.message });
-    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
 };
