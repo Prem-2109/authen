@@ -9,39 +9,39 @@ export const AppContextProvider = (props) => {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [userData, setUserData] = useState(false);
 
-    const getAuthState = async ()=>{
+    const getAuthState = async () => {
         try {
-            const {data} = await axios.get(backendUrl + '/api/auth/is-auth')
-            if(data.success){
+            const { data } = await axios.get(backendUrl + '/api/auth/is-auth')
+            if (data.success) {
                 setLoggedIn(true);
                 getUserData();
             }
         } catch (error) {
-            toast.error(data.message)
+            toast.error(error.message)
         }
     }
 
 
 
-    const getUserData = async ()=>{
+    const getUserData = async () => {
         try {
-            const {data} = await axios.get(backendUrl + '/api/user/data')
+            const { data } = await axios.get(backendUrl + '/api/user/data')
             data.success ? setUserData(data.userData) : toast.error(data.message)
         } catch (error) {
-            toast.error(data.message)
+            toast.error(error.message)
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getAuthState();
-    },[])
+    }, [])
 
     const value = {
         backendUrl, // Include any other shared state or functions here
         isLoggedIn, setLoggedIn,
         userData, setUserData,
         getUserData
-        
+
     };
 
     return (

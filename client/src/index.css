@@ -1,9 +1,238 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..900&family=Syne:wght@400..800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   font-family: "Outfit", serif;
+}
+
+.avatar-ring::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c6af7, #c56af7, #7c6af7);
+  background-size: 200%;
+  animation: gradSpin 4s linear infinite;
+}
+
+.avatar-ring::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #09090f;
+}
+
+@keyframes gradSpin {
+  0% {
+    background-position: 0% 50%
+  }
+
+  100% {
+    background-position: 200% 50%
+  }
+}
+
+.greeting-wave {
+  display: inline-block;
+  animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+
+  0%,
+  100% {
+    transform: rotate(0deg)
+  }
+
+  25% {
+    transform: rotate(18deg)
+  }
+
+  50% {
+    transform: rotate(-8deg)
+  }
+
+  75% {
+    transform: rotate(14deg)
+  }
+}
+
+.hero-headline .g {
+  background: linear-gradient(90deg, #7c6af7, #c56af7 50%, #6af7d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cta-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(124, 106, 247, 0.45);
+}
+
+.cta-primary:active {
+  transform: scale(0.97);
+}
+
+.cta-secondary:hover {
+  border-color: rgba(124, 106, 247, 0.4);
+  color: rgba(240, 238, 255, 0.85);
+  background: rgba(124, 106, 247, 0.06);
+}
+
+.fc-1 {
+  animation: floatL 5s ease-in-out infinite;
+}
+
+.fc-2 {
+  animation: floatR 6s ease-in-out infinite;
+}
+
+@keyframes floatL {
+
+  0%,
+  100% {
+    transform: translateY(0)
+  }
+
+  50% {
+    transform: translateY(-10px)
+  }
+}
+
+@keyframes floatR {
+
+  0%,
+  100% {
+    transform: translateY(0)
+  }
+
+  50% {
+    transform: translateY(8px)
+  }
+}
+
+@media(max-width:640px) {
+  .hero-fc {
+    display: none !important;
+  }
+}
+
+.tab-slider {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  background: linear-gradient(135deg, #7c6af7, #c56af7);
+  border-radius: 9px;
+  transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+  box-shadow: 0 4px 16px rgba(124, 106, 247, .35);
+}
+
+.input-wrap:focus-within {
+  border-color: rgba(124, 106, 247, .5);
+  box-shadow: 0 0 0 3px rgba(124, 106, 247, .1);
+}
+
+.visual-panel::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(124, 106, 247, .18), transparent 70%);
+  border-radius: 50%;
+  animation: pulse 6s ease-in-out infinite;
+}
+
+.visual-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  right: -40px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(197, 106, 247, .14), transparent 70%);
+  border-radius: 50%;
+  animation: pulse 8s ease-in-out infinite reverse;
+}
+
+.visual-tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #7c6af7;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1
+  }
+
+  50% {
+    transform: scale(1.15);
+    opacity: .7
+  }
+}
+
+.name-field {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height .35s cubic-bezier(.4, 0, .2, 1), opacity .25s ease, margin .35s;
+  margin-bottom: 0;
+}
+
+.name-field.show {
+  max-height: 80px;
+  opacity: 1;
+  margin-bottom: 14px;
+}
+
+.submit-btn:hover {
+  opacity: .92;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 36px rgba(124, 106, 247, .45);
+}
+
+.submit-btn:active {
+  transform: scale(.98);
+}
+
+.social-btn:hover {
+  background: rgba(255, 255, 255, .05);
+  border-color: rgba(255, 255, 255, .12);
+  color: #f0eeff;
+}
+
+@media(max-width:768px) {
+  .auth-page {
+    flex-direction: column !important;
+    width: 100% !important;
+    min-height: auto !important;
+  }
+
+  .visual-panel {
+    min-height: 180px !important;
+    padding: 28px !important;
+  }
+
+  .visual-features {
+    display: none !important;
+  }
+
+  .form-panel {
+    width: 100% !important;
+  }
 }
